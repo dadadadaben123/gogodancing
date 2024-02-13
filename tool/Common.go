@@ -18,7 +18,7 @@ func Success(context *gin.Context, v interface{}) {
 func Failed(context *gin.Context, v interface{}) {
 	context.JSON(400, gin.H{
 		"code":    FAILED,
-		"message": "解析失败",
+		"message": "失败",
 		"data":    v,
 	})
 }

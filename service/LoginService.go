@@ -5,6 +5,7 @@ import (
 	"github.com/songzhonghuasongzhonghua/gogodancing/model"
 	"github.com/songzhonghuasongzhonghua/gogodancing/param"
 	"github.com/songzhonghuasongzhonghua/gogodancing/tool"
+	"log"
 )
 
 type LoginEngine struct {
@@ -12,6 +13,7 @@ type LoginEngine struct {
 }
 
 func LoginService(param *param.LoginParam) (*model.Member, error) {
+
 	db := LoginEngine{tool.DbOrm}
 	member := new(model.Member)
 	bool, err := db.Alias("l").Where("l.mobile = ? and l.password", param.Mobile, param.Password).Get(member)
@@ -34,4 +36,25 @@ func LoginService(param *param.LoginParam) (*model.Member, error) {
 		}
 
 	}
+}
+
+func LoginPwdService(name string, password string) *model.Member {
+
+	member := dao.QueryMember(name, password)
+	//如果存在
+	if member.Id != 0 {
+		return member
+	}
+
+	newMember := new(model.Member)
+	newMember.UserName = name
+	newMember.Password = password
+	//如果不存在则插入
+	err := dao.InsertMember(newMember)
+	if err != nil {
+		log.Fatal(err.Error())
+		return nil
+	}
+
+	return newMember
 }
