@@ -21,6 +21,21 @@ func (sc *ShopService) GetShopList(long, lat string) []model.Shop {
 	}
 
 	newShopDao := dao.ShopDao{Orm: tool.DbOrm}
-	return newShopDao.GetShopList(longitude, latitude)
+	return newShopDao.GetShopList(longitude, latitude, "")
 
+}
+
+func (sc *ShopService) SearchShops(long, lat, keywords string) []model.Shop {
+	longitude, err := strconv.ParseFloat(long, 10)
+	if err != nil {
+		return nil
+	}
+	latitude, err := strconv.ParseFloat(lat, 10)
+	if err != nil {
+		return nil
+	}
+
+	newShopDao := dao.ShopDao{Orm: tool.DbOrm}
+
+	return newShopDao.GetShopList(longitude, latitude, keywords)
 }
