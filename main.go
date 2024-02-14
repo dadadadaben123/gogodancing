@@ -24,11 +24,17 @@ func main() {
 	tool.InitSession(engine)
 	//跨域中间件
 	engine.Use(Cors())
+	registerController(engine)
+	engine.Run(":" + config.AppPort)
+
+}
+
+func registerController(engine *gin.Engine) {
 	registerHelloController(engine)
 	registerLoginController(engine)
 	registerMemberController(engine)
-	engine.Run(":" + config.AppPort)
-
+	registerFoodCategoryController(engine)
+	registerShopController(engine)
 }
 
 func registerHelloController(engine *gin.Engine) {
@@ -43,6 +49,16 @@ func registerLoginController(engine *gin.Engine) {
 // 注册member路由
 func registerMemberController(engine *gin.Engine) {
 	new(controller.MemberController).Router(engine)
+}
+
+// 注册食品分类路由
+func registerFoodCategoryController(engine *gin.Engine) {
+	new(controller.FoodCategoryController).Router(engine)
+}
+
+// 注册商店路由
+func registerShopController(engine *gin.Engine) {
+	new(controller.ShopController).Router(engine)
 }
 
 // 全局跨域中间件
