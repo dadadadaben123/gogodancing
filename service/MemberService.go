@@ -18,3 +18,7 @@ func (ms *MemberService) UploadAvatarService(userId int64, fileName string) stri
 	return fileName
 
 }
+
+func (ms *MemberService) UserInfoService(userId int64) {
+
+}

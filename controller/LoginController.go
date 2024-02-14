@@ -89,6 +89,9 @@ func (lc *LoginController) loginPwd(context *gin.Context) {
 	if member.Id != 0 {
 		//登录成功
 		memberJson, _ := json.Marshal(member)
+		//设置cookie
+		context.SetCookie(tool.COOKIENAME, strconv.Itoa(int(member.Id)), 10*60, "/", "localhost", true, true)
+
 		//保存状态到session
 		tool.SetSess(context, "user_"+strconv.FormatInt(member.Id, 10), memberJson)
 		tool.Success(context, &member)

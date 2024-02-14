@@ -17,3 +17,13 @@ func UpdateAvatar(userId int64, path string) int64 {
 	fmt.Println("result------", result)
 	return result
 }
+
+func QueryUserInfo(userId int64) *model.Member {
+	member := new(model.Member)
+	md := MemberDao{tool.DbOrm}
+	_, err := md.Where("id = ?", userId).Get(member)
+	if err != nil {
+		return nil
+	}
+	return member
+}
