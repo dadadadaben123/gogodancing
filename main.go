@@ -35,6 +35,7 @@ func registerController(engine *gin.Engine) {
 	registerMemberController(engine)
 	registerFoodCategoryController(engine)
 	registerShopController(engine)
+	registerGoodsController(engine)
 }
 
 func registerHelloController(engine *gin.Engine) {
@@ -59,6 +60,11 @@ func registerFoodCategoryController(engine *gin.Engine) {
 // 注册商店路由
 func registerShopController(engine *gin.Engine) {
 	new(controller.ShopController).Router(engine)
+}
+
+// 注册商品路由
+func registerGoodsController(engine *gin.Engine) {
+	new(controller.GoodsController).Router(engine)
 }
 
 // 全局跨域中间件

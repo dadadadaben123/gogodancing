@@ -22,7 +22,7 @@ func OrmEngine(dbConfig *DatabaseConfig) (*Orm, error) {
 	}
 	db.ShowSQL(dbConfig.ShowSql)
 
-	err = db.Sync2(new(model.Member), new(model.FoodCategory), new(model.Shop), new(model.Service), new(model.ShopService))
+	err = db.Sync2(new(model.Member), new(model.FoodCategory), new(model.Shop), new(model.Service), new(model.ShopService), new(model.Goods))
 
 	if err != nil {
 		return nil, err
@@ -31,8 +31,9 @@ func OrmEngine(dbConfig *DatabaseConfig) (*Orm, error) {
 	orm.Engine = db
 
 	DbOrm.Engine = db
-
-	InitShopData()
+	//
+	//InitShopData()
+	//InitGoodsData()
 	return orm, nil
 }
 
@@ -58,6 +59,41 @@ func InitShopData() {
 	//插入
 	for _, shop := range shops {
 		_, err := session.Insert(&shop)
+		if err != nil {
+			fmt.Println(err)
+			session.Rollback()
+			return
+		}
+	}
+	//提交
+	err = session.Commit()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+}
+
+func InitGoodsData() {
+
+	goods := []model.Goods{
+		model.Goods{Name: "麻辣烫", Description: "番茄锅底，不辣", SellCount: 100, Price: 30, OldPrice: 40, ShopId: 1},
+		model.Goods{Name: "番茄炒蛋", Description: "正宗本帮菜", SellCount: 2100, Price: 20, OldPrice: 30, ShopId: 2},
+	}
+
+	//创建一个事务
+	session := DbOrm.NewSession()
+	//defer关闭
+	defer session.Close()
+	//开启
+	err := session.Begin()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	//插入
+	for _, good := range goods {
+		_, err := session.Insert(&good)
 		if err != nil {
 			fmt.Println(err)
 			session.Rollback()
