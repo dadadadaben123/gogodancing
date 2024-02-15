@@ -22,7 +22,7 @@ func OrmEngine(dbConfig *DatabaseConfig) (*Orm, error) {
 	}
 	db.ShowSQL(dbConfig.ShowSql)
 
-	err = db.Sync2(new(model.Member), new(model.FoodCategory), new(model.Shop))
+	err = db.Sync2(new(model.Member), new(model.FoodCategory), new(model.Shop), new(model.Service), new(model.ShopService))
 
 	if err != nil {
 		return nil, err

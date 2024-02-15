@@ -63,6 +63,16 @@ func (sc *ShopController) getShopList(context *gin.Context) {
 		tool.Failed(context, "获取商店列表为空")
 		return
 	}
+	for _, shop := range shops {
+		//获取shop关联的service
+		services := shopService.QueryServiceByShopId(shop.Id)
+		if len(services) == 0 {
+			shop.Support = nil
+		} else {
+			fmt.Println(services, "services---------------")
+			shop.Support = services
+		}
+	}
 
 	tool.Success(context, shops)
 

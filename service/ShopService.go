@@ -10,6 +10,11 @@ import (
 type ShopService struct {
 }
 
+func (sc *ShopService) QueryServiceByShopId(shopId int64) []model.Service {
+	newShopDao := dao.ShopDao{tool.DbOrm}
+	return newShopDao.GetServiceByShopId(shopId)
+}
+
 func (sc *ShopService) GetShopList(long, lat string) []model.Shop {
 	longitude, err := strconv.ParseFloat(long, 10)
 	if err != nil {
