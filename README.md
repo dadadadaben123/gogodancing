@@ -1,2 +1,3 @@
 # gogodancing
-in process
+gin+xorm+mysql+redis
+finished
